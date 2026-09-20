@@ -1,0 +1,8 @@
+Titulo: Landscape-mountains-nature-rock (24030753220).jpg
+Autor: www.Pixel.la Free Stock Photos
+Fonte: Wikimedia Commons
+Licenca: CC0 1.0 Universal (dominio publico)
+Pagina: https://commons.wikimedia.org/wiki/File:Landscape-mountains-nature-rock_(24030753220).jpg
+Resolucao original: 4000 x 2250
+Uso: fotografia em cor (PPM P6). O filtro bilateral adiciona ruído
+     Gaussiano (AWGN) de forma controlada, como nos papers de denoising.
