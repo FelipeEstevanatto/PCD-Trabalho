@@ -1,16 +1,34 @@
 /*
  * Filtro bilateral em cor, sequencial e OpenMP.
  *
- * Implementacao propria da definicao de Tomasi & Manduchi (1998), para a
- * disciplina de PCD — NAO e copia de FFmpeg, OpenCV nem de codigo de artigo.
- * O FFmpeg usa outro algoritmo (bilateral recursivo, Yang 2012).
+ * Implementacao propria da definicao de Tomasi e Manduchi (ICCV 1998,
+ * p. 839-846, DOI 10.1109/ICCV.1998.710815), para a disciplina de PCD.
+ * NAO e copia de FFmpeg, OpenCV nem de codigo de artigo.
+ * O filtro bilateral do FFmpeg e o recursivo de Yang, ECCV 2012,
+ * p. 399-413, DOI 10.1007/978-3-642-33718-5_29 (aproximacao O(n)).
  *
  * Fontes da DEFINICAO (nao do texto-fonte deste arquivo):
- *   Tomasi & Manduchi, ICCV 1998          — pesos espacial * faixa, exp()
- *   Chapman, Jost & van der Pas, 2007     — OpenMP parallel for
- *   Gonzalez & Woods, 2018                — PSNR, AWGN como teste de denoising
- *   Box & Muller, 1958                    — geracao de ruido Gaussiano
- *   Press et al., Numerical Recipes, 2007 — LCG (constantes 1664525, 1013904223)
+ *   Tomasi & Manduchi, ICCV 1998, p. 839-846
+ *     DOI 10.1109/ICCV.1998.710815 — pesos espacial * faixa, exp()
+ *   Chapman, Jost & van der Pas, Using OpenMP, MIT Press, 2007
+ *     — #pragma omp parallel for, schedule(static), num_threads
+ *   Gonzalez & Woods, Digital Image Processing, 4. ed., Pearson, 2018
+ *     — PSNR e protocolo foto limpa + AWGN
+ *   Box & Muller, Ann. Math. Statist., v. 29, n. 2, p. 610-611, 1958
+ *     DOI 10.1214/aoms/1177706645 — ruido Gaussiano
+ *   Press, Teukolsky, Vetterling & Flannery, Numerical Recipes, 3. ed.,
+ *     Cambridge Univ. Press, 2007 — LCG 1664525 / 1013904223
+ *
+ * Energia (proxy T*threads; RAPL nao e medido neste arquivo):
+ *   Queiroz, Damasceno, Siqueira, Amaris & Rodrigues, SSCAD 2024
+ *     (anais estendidos), p. 129-136
+ *     DOI 10.5753/sscad_estendido.2024.244061
+ *   Lorenzon & Beck Filho, Parallel Computing Hits the Power Wall,
+ *     Springer, 2019, DOI 10.1007/978-3-030-28719-1
+ *   Schöne, Ilsche, Bielert, Velten, Schmidl & Hackenberg,
+ *     IEEE Cluster 2021, p. 562-571
+ *     DOI 10.1109/Cluster48925.2021.00087
+ *     (coautor: Markus Schmidl, nao Max)
  *
  * Compilar:
  *   gcc -O3 -fopenmp -o bilateral_openmp.exe bilateral_openmp.c
@@ -99,7 +117,8 @@ static void die(const char *msg) {
 }
 
 static unsigned lcg_next(unsigned *state) {
-    /* Numerical Recipes (Press et al.): X_{n+1} = 1664525 X_n + 1013904223 */
+    /* Press, Teukolsky, Vetterling & Flannery, Numerical Recipes, 3. ed., 2007:
+     * X_{n+1} = 1664525 X_n + 1013904223 */
     *state = (*state * 1664525u + 1013904223u);
     return *state;
 }
@@ -109,7 +128,8 @@ static float rand_u01(unsigned *state) {
 }
 
 static float randn(unsigned *state) {
-    /* Box-Muller (1958): dois uniformes -> um normal N(0,1). */
+    /* Box & Muller, Ann. Math. Statist. 29(2):610-611, 1958,
+     * DOI 10.1214/aoms/1177706645: dois uniformes -> um normal N(0,1). */
     float u1 = rand_u01(state);
     const float u2 = rand_u01(state);
     return sqrtf(-2.0f * logf(u1)) * cosf((float)(2.0 * M_PI) * u2);
@@ -267,6 +287,7 @@ static double max_abs_diff(const Image *a, const Image *b) {
     return worst;
 }
 
+/* PSNR: Gonzalez & Woods, Digital Image Processing, 4. ed., Pearson, 2018. */
 static double psnr(const Image *ref, const Image *other) {
     const int n = (int)image_n(ref) * ref->channels;
     double mse = 0.0;
@@ -280,7 +301,8 @@ static double psnr(const Image *ref, const Image *other) {
 }
 
 /* Um pixel: I'(p) = sum_q G_s(||p-q||) G_r(|I(p)-I(q)|) I(q) / sum_q G_s G_r
- * (Tomasi & Manduchi, 1998). always_inline: gcc incorpora o corpo nos laços. */
+ * Tomasi & Manduchi, ICCV 1998, p. 839-846, DOI 10.1109/ICCV.1998.710815.
+ * always_inline: gcc incorpora o corpo nos lacos. */
 static inline __attribute__((always_inline))
 float bilateral_pixel(const float *in, int w, int h, int x, int y,
                                     int radius, int k, const float *spatial, float inv_2r2) {
@@ -344,6 +366,7 @@ static void bilateral_filter(const Image *src, Image *dst, int radius,
                 }
             }
         } else {
+            /* Chapman, Jost & van der Pas, Using OpenMP, MIT Press, 2007 */
             #pragma omp parallel for num_threads(threads) schedule(static)
             for (int y = 0; y < h; y++) {
                 for (int x = 0; x < w; x++) {
@@ -595,6 +618,8 @@ int main(int argc, char **argv) {
         printf("\nProtocolo: 1 aquecimento + %d repeticoes (ordem seq,1,2,4,8,16,32 em cada volta)\n",
                N_REPS);
         printf("Compilacao: gcc -O3 -fopenmp\n\n");
+        /* proxy E = tempo * threads (indicador indireto; ver Queiroz et al.,
+         * SSCAD 2024, e Lorenzon & Beck, 2019). RAPL: Schöne et al., 2021. */
         printf("%-10s %12s %12s %10s %12s %14s\n",
                "threads", "media(s)", "desvio(s)", "speedup", "eficiencia", "proxy E (s*th)");
         for (int i = 0; i < ncfg; i++) {

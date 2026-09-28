@@ -4,7 +4,7 @@
 
 > **Pergunta.** Qual número de threads oferece a melhor relação entre tempo de execução e eficiência energética na aplicação de um filtro bilateral em imagens 4K com OpenMP?
 >
-> **Hipótese.** O menor tempo ocorre perto do número de núcleos físicos (ou um pouco além, com SMT). A melhor eficiência — e, por extensão, a melhor relação desempenho/energia — acontece *antes* desse ponto, porque o ganho de tempo diminui enquanto o hardware continua ocupado.
+> **Hipótese.** O menor tempo ocorre perto do número de núcleos físicos (ou um pouco além, com SMT). A melhor eficiência — e, por extensão, a melhor relação desempenho/energia — acontece *antes* desse ponto, porque o ganho de tempo diminui enquanto o hardware continua ocupado (Lorenzon e Beck, 2019; Queiroz et al., 2024).
 
 Este documento resume a implementação, o protocolo de 10 execuções e a leitura dos resultados. Ainda é um **experimento-piloto em notebook**; os números finais do artigo devem ser repetidos na máquina padronizada do laboratório.
 
@@ -107,7 +107,7 @@ Alinhado ao mínimo do enunciado da disciplina:
 | Aquecimento | 1 passagem sequencial + 1 com 8 threads, **descartadas** |
 | Repetições | **10 voltas**; em cada volta: seq, 1, 2, 4, 8, 16, 32 (ordem intercalada) |
 | Métricas | média, desvio-padrão amostral, speedup \(T_1/T_p\), eficiência \(S/p\) |
-| Energia | **não medida** (sem RAPL neste piloto). Indicador indireto declarado: \(E_\text{proxy} = T \times p\) |
+| Energia | **não medida** (sem RAPL neste piloto; ver Schöne et al., 2021, para o que o RAPL reporta em AMD Zen). Indicador indireto declarado: \(E_\text{proxy} = T \times p\) |
 | Relógio | `omp_get_wtime()` só em volta do filtro |
 
 Os tempos brutos estão em `imagens/tempos_10reps.csv`.
@@ -149,7 +149,7 @@ Leitura direta:
 
 ## A hipótese vale? Qual é a razão
 
-A premissa **não diz que o menor tempo é o mais sustentável**. Diz o contrário: tempo e eficiência se separam.
+A premissa **não diz que o menor tempo é o mais sustentável**. Diz o contrário: tempo e eficiência se separam. Em aplicações OpenMP, Queiroz et al. (2024) também **não encontraram correlação direta** entre tempo de execução e consumo de energia.
 
 Nos dados, isso aparece com clareza na ponta alta:
 
@@ -167,7 +167,7 @@ Passar de 8 para 16 coloca **duas threads no mesmo núcleo**. Elas compartilham 
 
 Passar de 16 para 32 não cria núcleo nenhum: o OpenMP **enfileira** threads demais. O tempo fica igual (5,12 s) e a eficiência desaba (0,22). É overhead puro.
 
-A ponte para energia — ainda **indireta** — é esta: energia ≈ potência × tempo. Depois de 8 threads o *tempo quase parou de cair*, mas o pacote continua com todos os núcleos (e SMT) acordados. Se a potência não cai na mesma proporção, o produto potência × tempo piora. O proxy \(T \times p\) torna isso visível; não substitui RAPL.
+A ponte para energia — ainda **indireta** — é esta: energia ≈ potência × tempo. Depois de 8 threads o *tempo quase parou de cair*, mas o pacote continua com todos os núcleos (e SMT) acordados. Se a potência não cai na mesma proporção, o produto potência × tempo piora. Lorenzon e Beck (2019) descrevem esse teto (*power wall*): mais paralelismo deixa de reduzir o tempo na mesma proporção em que o hardware permanece ocupado. O proxy \(T \times p\) torna isso visível; não substitui RAPL.
 
 Há um matiz importante: se a potência do pacote já está no teto com 8 núcleos e SMT não gasta quase nada, 16 threads *poderiam* gastar menos joules por terminarem um pouco antes. Essa é exatamente a pergunta que a medição de energia na etapa 5 tem de resolver. O piloto já mostra **por que** a resposta não é “sempre o menor tempo”.
 
@@ -192,15 +192,15 @@ A implementação **está correta e alinhada ao tema**: filtro bilateral em 4K, 
 
 O resultado das 10 execuções **sustenta a hipótese na parte que independe de medidor de energia**: o menor tempo (16–32 threads) **não** é o ponto de melhor eficiência. O ponto de equilíbrio neste hardware é **8 threads** — o número de núcleos físicos. A razão é estrutural: depois disso não há mais ALUs novas, só SMT e fila do sistema operacional.
 
-O que ainda falta para o artigo (e para o WPADS, se for o caso) é repetir o protocolo no laboratório e **medir energia de verdade**. Até lá, a frase honesta é: *o menor tempo não coincide com o uso mais eficiente dos núcleos; a energia deve ser medida para confirmar se esse ponto também minimiza joules.*
+O que ainda falta para o artigo (e para o WPADS, se for o caso) é repetir o protocolo no laboratório e **medir energia de verdade** — neste AMD, o caminho natural é o RAPL (Schöne et al., 2021; o paper descreve Zen 2; o 7735HS é Zen 3, mesma família de interfaces). Até lá, a frase honesta é: *o menor tempo não coincide com o uso mais eficiente dos núcleos; a energia deve ser medida para confirmar se esse ponto também minimiza joules.*
 
 ---
 
 ### Referências usadas neste recorte
 
-TOMASI, C.; MANDUCHI, R. Bilateral filtering for gray and color images. In: IEEE INTERNATIONAL CONFERENCE ON COMPUTER VISION, 6., 1998. *Proceedings* […]. Bombay: IEEE, 1998. p. 839-846. **Definição do filtro implementado** (pesos espacial e de faixa).
+TOMASI, C.; MANDUCHI, R. Bilateral filtering for gray and color images. In: INTERNATIONAL CONFERENCE ON COMPUTER VISION, 6., 1998, Bombay. *Proceedings* […]. Bombay: IEEE, 1998. p. 839-846. DOI: https://doi.org/10.1109/ICCV.1998.710815. **Definição do filtro implementado** (pesos espacial e de faixa).
 
-BOX, G. E. P.; MULLER, M. E. A note on the generation of random normal deviates. *The Annals of Mathematical Statistics*, v. 29, n. 2, p. 610-611, 1958. **Geração do ruído Gaussiano (AWGN).**
+BOX, G. E. P.; MULLER, M. E. A note on the generation of random normal deviates. *The Annals of Mathematical Statistics*, v. 29, n. 2, p. 610-611, 1958. DOI: https://doi.org/10.1214/aoms/1177706645. **Geração do ruído Gaussiano (AWGN).**
 
 PRESS, W. H.; TEUKOLSKY, S. A.; VETTERLING, W. T.; FLANNERY, B. P. *Numerical recipes*: the art of scientific computing. 3. ed. Cambridge: Cambridge University Press, 2007. **LCG** usado na semente do ruído (constantes 1664525 e 1013904223).
 
@@ -210,9 +210,15 @@ CHAPMAN, B.; JOST, G.; VAN DER PAS, R. *Using OpenMP*: portable shared memory pa
 
 PACHECO, P. S. *An introduction to parallel programming*. Burlington, MA: Morgan Kaufmann, 2011. Speedup, eficiência e overhead de threads.
 
-AMDAHL, G. M. Validity of the single processor approach to achieving large scale computing capabilities. In: AFIPS SPRING JOINT COMPUTER CONFERENCE, 1967. *Proceedings* […]. New York: ACM, 1967. p. 483-485.
+AMDAHL, G. M. Validity of the single processor approach to achieving large scale computing capabilities. In: AFIPS SPRING JOINT COMPUTER CONFERENCE, 1967, Atlantic City. *Proceedings* […]. New York: ACM, 1967. p. 483-485. DOI: https://doi.org/10.1145/1465482.1465560.
 
-YANG, Q. Recursive bilateral filtering. In: EUROPEAN CONFERENCE ON COMPUTER VISION, 2012. *Proceedings* […]. Berlin: Springer, 2012. p. 399-413. **Não é o nosso código.** É a base do filtro `bilateral` do FFmpeg (aproximação \(O(n)\)).
+LORENZON, A. F.; BECK FILHO, A. C. S. *Parallel computing hits the power wall*: principles, challenges, and a survey of solutions. Cham: Springer, 2019. (SpringerBriefs in Computer Science). DOI: https://doi.org/10.1007/978-3-030-28719-1. **Teto de desempenho/energia** ao aumentar threads.
+
+QUEIROZ, F.; DAMASCENO, E.; SIQUEIRA, L.; AMARIS, M.; RODRIGUES, T. Predição de Consumo Energético de Aplicações OpenMP em Máquinas Multi-core com Aprendizado de Máquina. In: SIMPÓSIO EM SISTEMAS COMPUTACIONAIS DE ALTO DESEMPENHO, 25., 2024, São Carlos. *Anais estendidos* […]. Porto Alegre: SBC, 2024. p. 129-136. DOI: https://doi.org/10.5753/sscad_estendido.2024.244061. **Sem correlação direta** entre tempo de execução e consumo de energia em OpenMP.
+
+SCHÖNE, R.; ILSCHE, T.; BIELERT, M.; VELTEN, M.; SCHMIDL, M.; HACKENBERG, D. Energy efficiency aspects of the AMD Zen 2 architecture. In: IEEE INTERNATIONAL CONFERENCE ON CLUSTER COMPUTING, 2021, Portland. *Proceedings* […]. Piscataway: IEEE, 2021. p. 562-571. DOI: https://doi.org/10.1109/Cluster48925.2021.00087. **RAPL em AMD Zen**; o coautor é Markus Schmidl.
+
+YANG, Q. Recursive bilateral filtering. In: EUROPEAN CONFERENCE ON COMPUTER VISION, 12., 2012, Florença. *Proceedings* […]. Berlin: Springer, 2012. p. 399-413. DOI: https://doi.org/10.1007/978-3-642-33718-5_29. **Não é o nosso código.** É a base do filtro `bilateral` do FFmpeg (aproximação \(O(n)\)).
 
 FFMPEG. *libavfilter/vf_bilateral.c*. Disponível em: https://ffmpeg.org/doxygen/trunk/vf__bilateral_8c_source.html. Acesso em: 20 set. 2026. Trabalho relacionado; algoritmo distinto.
 
