@@ -552,15 +552,15 @@ int main(int argc, char **argv) {
     Image seq = image_alloc(width, height, ch);
     Image par = image_alloc(width, height, ch);
 
-    char p_orig[256], p_in[256], p_seq[256], p_par[256], p_csv[256];
+    char p_orig[256], p_ruido[256], p_seq[256], p_par[256], p_csv[256];
     path_join(p_orig, sizeof(p_orig), "original.ppm");
-    path_join(p_in, sizeof(p_in), "entrada.ppm");
+    path_join(p_ruido, sizeof(p_ruido), "ruido.ppm");
     path_join(p_seq, sizeof(p_seq), "saida_sequencial.ppm");
     path_join(p_par, sizeof(p_par), "saida_paralela.ppm");
     path_join(p_csv, sizeof(p_csv), "tempos_10reps.csv");
 
     save_pnm(p_orig, &clean);
-    save_pnm(p_in, &src);
+    save_pnm(p_ruido, &src);
 
     if (nthreads_only > 0) {
         const double t_seq = time_filter(&src, &seq, radius, sigma_s, sigma_r, 0);
