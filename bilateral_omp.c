@@ -125,7 +125,7 @@ int main(int argc, char **argv) {
         generate_synthetic_image(&src);
     }
 
-    Image clean = image_clone(&src);
+    Image original = image_clone(&src);
     add_gaussian_noise(&src, noise_sigma, 20260920u);
 
     const int width = src.width;
@@ -171,12 +171,12 @@ int main(int argc, char **argv) {
             image_free(&par_disk);
         }
         if (noise_sigma > 0.0f) {
-            fprintf(stderr, "PSNR bilateral vs original = %.2f dB\n", psnr(&clean, &out));
+            fprintf(stderr, "PSNR bilateral vs original = %.2f dB\n", psnr(&original, &out));
         }
     }
 
     image_free(&src);
-    image_free(&clean);
+    image_free(&original);
     image_free(&out);
     return 0;
 }
