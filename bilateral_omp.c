@@ -21,6 +21,7 @@
  */
 
 #include "bilateral_common.h"
+#include "bilateral_common.c"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,7 +29,7 @@
 #include <omp.h>
 
 static void bilateral_filter_omp(const Image *src, Image *dst, int radius,
-                                 float sigma_s, float sigma_r, int threads) {
+                                float sigma_s, float sigma_r, int threads) {
     const int w = src->width;
     const int h = src->height;
     const int ch = src->channels;
@@ -36,7 +37,7 @@ static void bilateral_filter_omp(const Image *src, Image *dst, int radius,
     const float inv_2r2 = 1.0f / (2.0f * sigma_r * sigma_r);
     int k = 0;
     float *spatial = make_spatial_kernel(radius, sigma_s, &k);
-
+    
     for (int c = 0; c < ch; c++) {
         const float *in = src->data + (size_t)c * (size_t)n;
         float *out = dst->data + (size_t)c * (size_t)n;
