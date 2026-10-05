@@ -215,15 +215,6 @@ void generate_synthetic_image(Image *img) {
     }
 }
 
-void add_gaussian_noise(Image *img, float sigma, unsigned seed) {
-    if (sigma <= 0.0f) return;
-    const int n = (int)image_n(img) * img->channels;
-    unsigned rng = seed;
-    for (int i = 0; i < n; i++) {
-        img->data[i] = clampf(img->data[i] + sigma * randn(&rng), 0.0f, 255.0f);
-    }
-}
-
 const char *save_pnm(const char *path, const Image *img) {
     FILE *f = fopen(path, "wb");
     if (!f) {

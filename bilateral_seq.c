@@ -18,6 +18,7 @@
 
 #include "bilateral_common.h"
 #include "bilateral_common.c"
+#include "ruido.c"
 
 #include <stdio.h>
 #include <stdlib.h>
