@@ -21,7 +21,6 @@
  */
 
 #include "bilateral_common.h"
-#include "bilateral_common.c"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -64,7 +63,6 @@ int main(int argc, char **argv) {
     int synth_w = 0, synth_h = 0;
     const char *image_path = DEFAULT_IMAGE;
     float noise_sigma = 25.0f;
-    int do_save = 0;
     int argi = 1;
 
     if (argc < 2 || !is_number(argv[1])) {
@@ -101,10 +99,6 @@ int main(int argc, char **argv) {
         noise_sigma = (float)atof(argv[argi]);
         argi++;
     }
-    if (argc > argi && strcmp(argv[argi], "--save") == 0) {
-        do_save = 1;
-        argi++;
-    }
 
     if (radius < 1) {
         usage(argv[0]);
@@ -126,12 +120,11 @@ int main(int argc, char **argv) {
         generate_synthetic_image(&src);
     }
 
-    Image original = image_clone(&src);
-    add_gaussian_noise(&src, noise_sigma, 20260920u);
+    Image ruido = load_pnm("imagens/ruido.ppm");
 
-    const int width = src.width;
-    const int height = src.height;
-    const int ch = src.channels;
+    const int width = ruido.width;
+    const int height = ruido.height;
+    const int ch = ruido.channels;
     const int k = 2 * radius + 1;
 
     fprintf(stderr, "bilateral OMP  |  %dx%d x %d  |  raio %d  |  threads=%d  |  CPUs=%d\n",
@@ -141,43 +134,17 @@ int main(int argc, char **argv) {
 
     Image out = image_alloc(width, height, ch);
     const double t0 = wall_time();
-    bilateral_filter_omp(&src, &out, radius, sigma_s, sigma_r, nthreads);
+    bilateral_filter_omp(&ruido, &out, radius, sigma_s, sigma_r, nthreads);
     const double elapsed = wall_time() - t0;
 
     printf("tempo_s=%.6f\n", elapsed);
     fflush(stdout);
 
-    if (do_save) {
-        ensure_out_dir();
-        char p_par[256], p_seq[256];
-        path_join(p_par, sizeof(p_par), "saida_paralela.ppm");
-        path_join(p_seq, sizeof(p_seq), "saida_sequencial.ppm");
-        save_pnm(p_par, &out);
-        fprintf(stderr, "gravado: %s\n", p_par);
-
-        FILE *fseq = fopen(p_seq, "rb");
-        if (fseq) {
-            fclose(fseq);
-            /* Compara apos round-trip PPM (u8), nao float vs arquivo. */
-            Image seq_disk = load_pnm(p_seq);
-            Image par_disk = load_pnm(p_par);
-            if (seq_disk.width == par_disk.width &&
-                seq_disk.height == par_disk.height &&
-                seq_disk.channels == par_disk.channels) {
-                const double err = max_abs_diff(&seq_disk, &par_disk);
-                fprintf(stderr, "erro maximo |par - seq| = %.6e\n", err);
-                fprintf(stderr, "Validacao: %s\n", err < 1e-3 ? "OK" : "FALHOU");
-            }
-            image_free(&seq_disk);
-            image_free(&par_disk);
-        }
-        if (noise_sigma > 0.0f) {
-            fprintf(stderr, "PSNR bilateral vs original = %.2f dB\n", psnr(&original, &out));
-        }
-    }
+    fprintf(stderr, "PSNR bilateral vs original = %.2f dB\n", psnr(&src, &out));
+    fprintf(stderr, "PSNR gaussiano vs original = %.2f dB\n", psnr(&src, &ruido));
 
     image_free(&src);
-    image_free(&original);
+    image_free(&ruido);
     image_free(&out);
     return 0;
 }

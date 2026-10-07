@@ -1,31 +1,34 @@
 /*
- * Filtro bilateral SEQUENCIAL (sem OpenMP).
+ * Filtro bilateral PARALELO com OpenMP.
  *
  * Implementacao propria da definicao de Tomasi e Manduchi (ICCV 1998,
  * p. 839-846, DOI 10.1109/ICCV.1998.710815).
  * NAO e copia de FFmpeg, OpenCV nem de codigo de artigo.
+ * O filtro bilateral do FFmpeg e o recursivo de Yang, ECCV 2012,
+ * p. 399-413, DOI 10.1007/978-3-642-33718-5_29 (aproximacao O(n)).
+ *
+ * OpenMP: Chapman, Jost & van der Pas, Using OpenMP, MIT Press, 2007.
  *
  * Compilar:
- *   gcc -O3 -o bilateral_seq.exe bilateral_seq.c bilateral_common.c -lm
+ *   gcc -O3 -fopenmp -o bilateral_omp.exe bilateral_omp.c bilateral_common.c -lm
  *
  * Uso:
- *   bilateral_seq.exe [raio] [imagem.ppm|pgm] [sigma_ruido] [--save]
- *   bilateral_seq.exe [raio] --sintetica <W> <H> [sigma_ruido] [--save]
+ *   bilateral_omp.exe <nthreads> [raio] [imagem.ppm|pgm] [sigma_ruido] [--save]
+ *   bilateral_omp.exe <nthreads> [raio] --sintetica <W> <H> [sigma_ruido] [--save]
  *
  * Imprime uma linha parseavel: tempo_s=<segundos>
  * O protocolo completo (seq + omp intercalados) fica em run_experimento.ps1/.sh
  */
 
 #include "bilateral_common.h"
-#include "bilateral_common.c"
-#include "ruido.c"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 
-static void bilateral_filter_seq(const Image *src, Image *dst, int radius,
-                                 float sigma_s, float sigma_r) {
+static void bilateral_filter_omp(const Image *src, Image *dst, int radius,
+                                float sigma_s, float sigma_r, int threads) {
     const int w = src->width;
     const int h = src->height;
     const int ch = src->channels;
@@ -33,7 +36,7 @@ static void bilateral_filter_seq(const Image *src, Image *dst, int radius,
     const float inv_2r2 = 1.0f / (2.0f * sigma_r * sigma_r);
     int k = 0;
     float *spatial = make_spatial_kernel(radius, sigma_s, &k);
-
+    
     for (int c = 0; c < ch; c++) {
         const float *in = src->data + (size_t)c * (size_t)n;
         float *out = dst->data + (size_t)c * (size_t)n;
@@ -48,22 +51,29 @@ static void bilateral_filter_seq(const Image *src, Image *dst, int radius,
 
 static void usage(const char *argv0) {
     fprintf(stderr, "Uso:\n");
-    fprintf(stderr, "  %s [raio] [imagem.ppm|pgm] [sigma_ruido] [--save]\n", argv0);
-    fprintf(stderr, "  %s [raio] --sintetica <W> <H> [sigma_ruido] [--save]\n", argv0);
+    fprintf(stderr, "  %s <nthreads> [raio] [imagem.ppm|pgm] [sigma_ruido] [--save]\n", argv0);
+    fprintf(stderr, "  %s <nthreads> [raio] --sintetica <W> <H> [sigma_ruido] [--save]\n", argv0);
 }
 
 int main(int argc, char **argv) {
+    int nthreads = 0;
     int radius = 9;
     int synth_w = 0, synth_h = 0;
     const char *image_path = DEFAULT_IMAGE;
     float noise_sigma = 25.0f;
-    int do_save = 0;
     int argi = 1;
 
-    while (argi < argc && strcmp(argv[argi], "--save") == 0) {
-        do_save = 1;
-        argi++;
+    if (argc < 2 || !is_number(argv[1])) {
+        usage(argv[0]);
+        return 1;
     }
+    nthreads = atoi(argv[1]);
+    argi = 2;
+    if (nthreads < 1) {
+        fprintf(stderr, "nthreads deve ser >= 1\n");
+        return 1;
+    }
+
     if (argc > argi && is_number(argv[argi])) {
         radius = atoi(argv[argi]);
         argi++;
@@ -87,10 +97,6 @@ int main(int argc, char **argv) {
         noise_sigma = (float)atof(argv[argi]);
         argi++;
     }
-    if (argc > argi && strcmp(argv[argi], "--save") == 0) {
-        do_save = 1;
-        argi++;
-    }
 
     if (radius < 1) {
         usage(argv[0]);
@@ -112,45 +118,31 @@ int main(int argc, char **argv) {
         generate_synthetic_image(&src);
     }
 
-    Image clean = image_clone(&src);
-    add_gaussian_noise(&src, noise_sigma, 20260920u);
+    Image ruido = load_pnm("imagens/ruido.ppm");
 
-    const int width = src.width;
-    const int height = src.height;
-    const int ch = src.channels;
+    const int width = ruido.width;
+    const int height = ruido.height;
+    const int ch = ruido.channels;
     const int k = 2 * radius + 1;
 
-    fprintf(stderr, "bilateral SEQ  |  %dx%d x %d  |  raio %d (kernel %dx%d)\n",
-            width, height, ch, radius, k, k);
+    fprintf(stderr, "bilateral SEQ  |  %dx%d x %d  |  raio %d  |  threads=%d  |  CPUs=%d\n",
+            width, height, ch, radius, 0, 8);
     fprintf(stderr, "entrada: %s  |  sigma_s=%.2f sigma_r=%.2f AWGN=%.1f\n",
             image_path ? image_path : "(sintetica)", sigma_s, sigma_r, noise_sigma);
 
     Image out = image_alloc(width, height, ch);
     const double t0 = wall_time();
-    bilateral_filter_seq(&src, &out, radius, sigma_s, sigma_r);
+    bilateral_filter_omp(&ruido, &out, radius, sigma_s, sigma_r, nthreads);
     const double elapsed = wall_time() - t0;
 
     printf("tempo_s=%.6f\n", elapsed);
     fflush(stdout);
 
-    if (do_save) {
-        ensure_out_dir();
-        char p_orig[256], p_in[256], p_seq[256];
-        path_join(p_orig, sizeof(p_orig), "original.ppm");
-        path_join(p_in, sizeof(p_in), "entrada.ppm");
-        path_join(p_seq, sizeof(p_seq), "saida_sequencial.ppm");
-        save_pnm(p_orig, &clean);
-        save_pnm(p_in, &src);
-        save_pnm(p_seq, &out);
-        fprintf(stderr, "gravado: %s, %s, %s\n", p_orig, p_in, p_seq);
-        if (noise_sigma > 0.0f) {
-            fprintf(stderr, "PSNR ruidosa vs original  = %.2f dB\n", psnr(&clean, &src));
-            fprintf(stderr, "PSNR bilateral vs original = %.2f dB\n", psnr(&clean, &out));
-        }
-    }
+    fprintf(stderr, "PSNR bilateral vs original = %.2f dB\n", psnr(&src, &out));
+    fprintf(stderr, "PSNR gaussiano vs original = %.2f dB\n", psnr(&src, &ruido));
 
     image_free(&src);
-    image_free(&clean);
+    image_free(&ruido);
     image_free(&out);
     return 0;
 }
