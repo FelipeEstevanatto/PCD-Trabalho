@@ -1,0 +1,3 @@
+bilateral SEQ  |  32x32 x 1  |  raio 2 (kernel 5x5)
+entrada: (sintetica)  |  sigma_s=1.00 sigma_r=30.00 AWGN=0.0
+gravado: imagens/original.ppm, imagens/entrada.ppm, imagens/saida_sequencial.ppm

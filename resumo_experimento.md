@@ -32,34 +32,42 @@ Não existe uma “4K oficial” de bilateral. O padrão da literatura é foto l
 
 ## O que foi implementado
 
-Arquivo único: `bilateral_openmp.c`.
+Dois binários + utilitário compartilhado:
+
+```text
+bilateral_common.c/.h   — I/O, ruído, PSNR, pixel do filtro
+bilateral_seq.c         — laço sequencial (sem OpenMP)
+bilateral_omp.c         — #pragma omp parallel for
+run_experimento.ps1/.sh — protocolo intercalado (CPU nao esfria)
+```
 
 ```text
 foto 4K RGB  →  AWGN σ=25  →  bilateral (σ_s = r/2, σ_r = 2σ)
-                              ├ sequencial  (baseline)
-                              └ OpenMP      1, 2, 4, 8, 16, 32 threads
+                              ├ bilateral_seq.exe
+                              └ bilateral_omp.exe  1, 2, 4, 8, 16, 32 threads
 ```
 
 - Kernel espacial pré-computado; o kernel de faixa (`expf` da diferença de intensidade) é por vizinho.
 - Bordas: vizinhos fora da imagem são ignorados; o pixel é renormalizado por `wsum`.
 - OpenMP: `schedule(static)`, `num_threads(N)`, um laço paralelo por canal.
 - 32 threads é **oversubscription** (o CPU tem 16 lógicos) — pedido pelo enunciado (“dezenas de threads quando possível”).
+- O harness chama seq e omp **na mesma volta**, sem `sleep`, para o chip não esfriar entre configs.
 
-**Origem.** O arquivo é implementação **própria** da definição publicada; não foi copiado de FFmpeg, OpenCV, repositório nem slide de disciplina. O que veio da literatura é a *fórmula* e o *método de teste*, citados abaixo.
+**Origem.** Os arquivos são implementação **própria** da definição publicada; não foram copiados de FFmpeg, OpenCV, repositório nem slide de disciplina. O que veio da literatura é a *fórmula* e o *método de teste*, citados abaixo.
 
 ```bash
-gcc -O3 -fopenmp -o bilateral_openmp.exe bilateral_openmp.c
-./bilateral_openmp.exe                              # 1 aquecimento + 10 reps
-./bilateral_openmp.exe 8                            # seq vs 8 threads
-./bilateral_openmp.exe 8 9 imagens/montanha_4k.ppm 25
+gcc -O3 -o bilateral_seq.exe bilateral_seq.c bilateral_common.c -lm
+gcc -O3 -fopenmp -o bilateral_omp.exe bilateral_omp.c bilateral_common.c -lm
+.\run_experimento.ps1                    # 1 aquecimento + 10 reps intercaladas
+.\run_experimento.ps1 -Quick             # 1 rep (teste)
 ```
 
-| Argumento | Exemplo | Significado |
+| Argumento (binário isolado) | Exemplo | Significado |
 | ---: | ---: | :--- |
-| 1 | `8` | número de **threads** OpenMP |
-| 2 | `9` | **raio** do kernel (kernel \(19\times19\)) |
-| 3 | `imagens/montanha_4k.ppm` | imagem de entrada |
-| 4 | `25` | **σ do ruído Gaussiano** (AWGN). `0` desliga o ruído |
+| omp: 1 | `8` | número de **threads** OpenMP |
+| seguinte | `9` | **raio** do kernel (kernel \(19\times19\)) |
+| seguinte | `imagens/montanha_4k.ppm` | imagem de entrada |
+| seguinte | `25` | **σ do ruído Gaussiano** (AWGN). `0` desliga o ruído |
 
 **Correção.** Em todas as configurações, \(\max |I_\text{par} - I_\text{seq}| = 0\).  
 **Qualidade.** PSNR da ruidosa = **20,41 dB**; da filtrada = **25,23 dB**. O ruído sai e a imagem se aproxima da foto limpa; as arestas da rocha permanecem. Ver `imagens/comparacao_bilateral.png`.
