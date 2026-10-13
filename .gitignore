@@ -1,0 +1,12 @@
+# Artefatos intermediarios de build (os .exe e as DLLs de runtime sao
+# versionados de proposito, para rodar sem precisar compilar)
+*.o
+*.obj
+
+# Saidas geradas pelos scripts (nao versionar imagens de saida)
+dados/entrada/*_filtrada_*.ppm
+figuras/*.png
+
+# Python
+__pycache__/
+*.pyc

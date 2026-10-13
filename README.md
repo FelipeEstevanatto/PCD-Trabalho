@@ -1,79 +1,128 @@
-# Filtro bilateral (sequencial + OpenMP)
+# Filtro bilateral com OpenMP — desempenho e eficiência energética
 
-Dois programas, mesma definição do filtro:
+Código, scripts, dados e registros do artigo:
 
-| Arquivo | Binário | Papel |
-| :--- | :--- | :--- |
-| `bilateral_seq.c` | `bilateral_seq.exe` | versão **sequencial** (sem OpenMP) |
-| `bilateral_omp.c` | `bilateral_omp.exe` | versão **paralela** (`#pragma omp parallel for`) |
-| `bilateral_common.c` | (linkado nos dois) | I/O PPM, ruído, PSNR, pixel do filtro |
+> **Impacto do Número de Threads no Desempenho e na Eficiência Energética de um
+> Filtro Bilateral com OpenMP**
+> Bianca Valenciani, Felipe Lima Estevanatto, Felipe Soares Calderaro,
+> Isabella Maria Ribeiro, Vitor Guilherme Alves — UNIFESP/ICT
+> Programação Concorrente e Distribuída (Prof. Álvaro Fazenda), 2026.
 
-O protocolo de 10 reps **não** roda um binário de cada vez em lote (isso deixa o CPU esfriar). Use o harness: em cada volta chama `seq`, depois `1, 2, 4, 8, 16, 32` threads **em sequência imediata**.
+**Pergunta.** Qual número de threads oferece a melhor relação entre tempo de
+execução e eficiência energética ao aplicar um filtro bilateral em imagens de
+alta resolução com OpenMP?
+
+**Hipótese (H1).** O menor tempo ocorre com o número de threads lógicas, mas o
+menor consumo de energia ocorre antes, com o número de núcleos físicos.
+**Resultado:** H1 foi **refutada** — com 8 threads (todas as lógicas) o filtro
+foi de 3,4 a 3,9 vezes mais rápido e gastou de 38% a 44% menos energia que a
+versão sequencial.
+
+## Estrutura
+
+```text
+src/
+  bilateral_common.{c,h}   I/O PNM, ruido, PSNR, kernel, pixel do filtro
+  bilateral_seq.c          filtro sequencial de referencia
+  bilateral_omp.c          filtro paralelo; difere do sequencial SO na diretiva
+                           OpenMP (marcada com "DIFERENCA" no arquivo)
+  ruido.c                  gerador de ruido AWGN (programa separado)
+scripts/
+  build.ps1 / build.sh     compilacao
+  run_experimento.ps1/.sh  protocolo do artigo (raios 3/5/7, threads 1..16, 10 reps)
+  analisar.py              consolida os logs em CSV/tabelas (e figuras)
+  montar_comparacao.py     figura original | ruidosa | filtrada
+  baixar_imagem.py         rebaixa a foto CC0 de origem
+dados/
+  entrada/                 imagens do artigo (limpas e ruidosas) + FONTE.txt
+  resultados/              logs brutos do artigo + CSVs consolidados
+  legado/                  insumos antigos nao usados no artigo
+tools/pcm.exe              Intel PCM (leitura de energia RAPL)
+docs/piloto_amd.md         experimento-piloto anterior (AMD Ryzen, sem RAPL)
+Makefile
+```
 
 ## Compilar
 
 ```bash
-gcc -O3 -o bilateral_seq.exe bilateral_seq.c bilateral_common.c -lm
-gcc -O3 -fopenmp -o bilateral_omp.exe bilateral_omp.c bilateral_common.c -lm
+make                 # ou:  scripts/build.sh   /   scripts\build.ps1
+gcc -O3            -o bilateral_seq.exe src/bilateral_seq.c src/bilateral_common.c -lm
+gcc -O3 -fopenmp   -o bilateral_omp.exe src/bilateral_omp.c src/bilateral_common.c -lm
+gcc -O3            -o ruido.exe         src/ruido.c         src/bilateral_common.c -lm
 ```
 
-## Protocolo completo (recomendado)
+Sequencial e paralelo são **dois fontes quase idênticos** (`src/bilateral_seq.c`
+e `src/bilateral_omp.c`): a única diferença funcional é a diretiva
+`#pragma omp parallel for`, marcada com `DIFERENCA` dentro de `bilateral_omp.c`.
+Ambos compartilham `bilateral_common.c` (I/O, ruído, PSNR, pixel do filtro).
 
-PowerShell (Windows):
+## Reproduzir o experimento
 
 ```powershell
-.\run_experimento.ps1
-.\run_experimento.ps1 -Quick
-.\run_experimento.ps1 -Reps 10 -Radius 9 -Image imagens/montanha_4k.ppm -Sigma 25
+# Windows (protocolo completo do artigo)
+scripts\run_experimento.ps1
+# teste rápido (1 imagem, 1 raio, 2 threads, sem PCM)
+scripts\run_experimento.ps1 -Reps 2 -Radii 3 -Threads 4,8 -NoPcm
+
+python scripts/analisar.py            # CSV + tabelas
+python scripts/analisar.py --figuras  # tambem figuras (matplotlib)
 ```
 
-Bash (lab / Linux):
-
 ```bash
-./run_experimento.sh
-QUICK=1 ./run_experimento.sh
+# Linux / macOS / MSYS2
+./scripts/run_experimento.sh
+python scripts/analisar.py
 ```
 
-Saída: tabela (média, desvio, speedup, eficiência, proxy E) e `imagens/tempos_10reps.csv`.
+O runner roda, para cada imagem, cada raio `{3,5,7}` e cada configuração
+`{seq, 1, 2, 4, 8, 16}`, um aquecimento (descartado) e então 10 repetições,
+cada uma sob o Intel PCM (`tools/pcm.exe -- <programa>`) quando disponível. Os
+logs saem em `dados/resultados/<imagem>/`.
 
-## Rodar um binário isolado
-
-Útil para um teste pontual. Cada um imprime `tempo_s=...` no stdout.
+### Uso do filtro isolado
 
 ```bash
-./bilateral_seq.exe 9 imagens/montanha_4k.ppm 25 --save
-./bilateral_omp.exe 8 9 imagens/montanha_4k.ppm 25 --save
+# <threads> <raio> <imagem> <sigma> [--save]
+./bilateral_omp.exe 8 3 dados/entrada/montanha_4k.ppm 25
+./bilateral_seq.exe 1 3 dados/entrada/montanha_4k.ppm 25 --save
 ```
 
 | Argumento | Exemplo | Significado |
-| ---: | ---: | :--- |
-| (omp) 1 | `8` | número de **threads** OpenMP |
-| seguinte | `9` | **raio** do kernel (aqui 19×19) |
-| seguinte | `imagens/montanha_4k.ppm` | arquivo de entrada |
-| seguinte | `25` | **σ do ruído Gaussiano** (AWGN). `0` = sem ruído |
-| flag | `--save` | grava PPMs em `imagens/` |
+| --- | --- | --- |
+| threads | `8` | nº de threads OpenMP (ignorado na versão sequencial) |
+| raio | `3` | raio do kernel (janela `(2r+1)²`) |
+| imagem | `dados/entrada/montanha_4k.ppm` | imagem limpa (PPM/PGM) |
+| sigma | `25` | desvio do ruído AWGN; vira `σr = 2·sigma`, `σs = raio/2` |
+| `--save` | — | grava a saída em `<imagem>_filtrada_<seq|omp>.ppm` |
 
-## Interpretar
+A imagem **ruidosa** é procurada em `<imagem sem extensão>_ruido.ppm`
+(gerada antes por `ruido.exe`, conforme a Seção 4.1 do artigo). O programa
+imprime `tempo_s=...` no stdout e o PSNR no stderr.
 
-| Coluna | Significado |
-| :--- | :--- |
-| `media(s)` | Tempo do filtro (menor = mais rápido) |
-| `speedup` | \(T_\text{seq} / T_p\) (maior = melhor) |
-| `eficiencia` | speedup / threads (1,0 = escalou linear) |
-| `proxy E` | tempo × threads (indicador **indireto** de energia; menor = melhor) |
+## Dados e proveniência
 
-Neste CPU (8 núcleos / 16 lógicos), o **menor tempo** tende a 16–32 threads; a **melhor eficiência** tende a **8**. Se o paralelo bater com o sequencial (`erro máximo ≈ 0` ao usar `--save` nos dois) e o PSNR subir, o filtro está correto e o ruído saiu.
+- Imagem principal: `dados/entrada/montanha_4k.ppm` (4000×2250, RGB).
+- Segunda imagem: `dados/entrada/montanha2_4k.ppm` (2048×1365, RGB) — o sufixo
+  `4k` é do nome original; a resolução real é 2048×1365.
+- Imagens ruidosas do artigo: `*_ruido.ppm` (AWGN σ=25, semente fixa).
+  Conferência: PSNR contra a imagem limpa = **20,41 dB** (principal) e
+  **20,63 dB** (segunda) — exatamente os valores do artigo.
+- Ambiente dos números do artigo: Intel Core i5-1035G1 (4 núcleos / 8 threads),
+  Windows 11, GCC 16.2.0, energia lida do RAPL pelo Intel PCM. Os registros
+  brutos (10 execuções por configuração) estão em `dados/resultados/`.
 
-Análise em `resumo_experimento.md`.
+## Notas
 
-## Origem do código
+- A energia é medida pelo PCM envolvendo o processo inteiro (inclui leitura das
+  imagens e cálculo do PSNR); o texto justifica a parte fixa no artigo.
+- A implementação reproduz a **definição exata** do filtro (Tomasi & Manduchi,
+  1998) e não foi otimizada para tempo absoluto — os tempos não são comparáveis
+  a FFmpeg/OpenCV, que usam outros algoritmos. Ver `docs/piloto_amd.md`.
 
-Implementação **própria** da fórmula de Tomasi e Manduchi (1998), paralela com OpenMP (Chapman et al., 2007). **Não** é cópia do FFmpeg nem do OpenCV (o `bilateral` do FFmpeg é o algoritmo recursivo de Yang, 2012).
+## Licença e créditos
 
-- Filtro: Tomasi & Manduchi, ICCV 1998
-- Ruído Gaussiano: Box & Muller, 1958
-- LCG: Press et al., *Numerical Recipes*, 2007
-- PSNR / AWGN: Gonzalez & Woods, 2018
-- Foto: Wikimedia Commons, CC0 — ver `imagens/FONTE.txt`
+- Código e dados: MIT (ver `LICENSE`).
+- `tools/pcm.exe`: Intel Performance Counter Monitor (licença do projeto Intel).
+- Foto: www.Pixel.la via Wikimedia Commons, CC0 — `dados/entrada/FONTE.txt`.
 
-Lista completa em `resumo_experimento.md`.
+Se usar este material, cite o artigo e o repositório (ver `CITATION.cff`).

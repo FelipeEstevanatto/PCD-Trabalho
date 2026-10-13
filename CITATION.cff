@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "Se usar este codigo ou os dados, cite o artigo e o repositorio."
+title: "Impacto do Numero de Threads no Desempenho e na Eficiencia Energetica de um Filtro Bilateral com OpenMP"
+authors:
+  - family-names: Valenciani
+    given-names: Bianca
+  - family-names: Estevanatto
+    given-names: Felipe Lima
+  - family-names: Calderaro
+    given-names: Felipe Soares
+  - family-names: Ribeiro
+    given-names: Isabella Maria
+  - family-names: Alves
+    given-names: Vitor Guilherme
+year: 2026
+repository-code: "https://github.com/FelipeEstevanatto/PCD-Trabalho"
+keywords:
+  - OpenMP
+  - filtro bilateral
+  - computacao de alto desempenho
+  - eficiencia energetica
+  - RAPL
+license: MIT
