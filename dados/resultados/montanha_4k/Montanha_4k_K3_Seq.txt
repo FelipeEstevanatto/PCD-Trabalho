@@ -1,0 +1,1 @@
+﻿# protocolo: imagem=dados/entrada/montanha_4k.ppm raio=3 config=seq sigma=25 reps=10

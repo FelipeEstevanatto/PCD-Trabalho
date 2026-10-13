@@ -1,0 +1,1099 @@
+*
+1
+*
+
+ .\pcm.exe -- .\bilateral_seq.exe 1 3 imagens/montanha2_4k.ppm 25
+DEBUG: Setting Ctrl+C done.
+
+ Intel(r) Performance Counter Monitor ($Format:%ci ID=%h$)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 27
+CPU family               : 6
+CPU model number         : 126
+Number of physical cores: 4
+Number of logical cores: 8
+Number of online logical cores: 8
+Threads (logical cores) per physical core: 2
+Num sockets: 1
+Physical cores per socket: 4
+Last level cache slices per socket: 4
+Core PMU (perfmon) version: 5
+Number of core PMU generic (programmable) counters: 8
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 4
+Width of fixed counters: 48 bits
+Nominal core frequency: 1200000000 Hz
+IBRS enabled in the kernel   : yes
+STIBP enabled in the kernel  : no
+The processor is not susceptible to Rogue Data Cache Load: yes
+The processor supports enhanced IBRS                     : yes
+Package thermal spec power: 15 Watt; Package minimum power: 0 Watt; Package maximum power: 0 Watt;
+
+Socket 0: 0 PCU units detected. 0 IIO units detected. 0 IRP units detected. 0 CHA/CBO units detected. 0 MDF units detected. 0 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+
+Detected Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz "Intel(r) microarchitecture codename Icelake" stepping 5 microcode level 0xa0
+
+Executing ".\bilateral_seq.exe" command:
+bilateral SEQ  |  2048x1365 x 3  |  raio 3  |  threads=0  |  CPUs=8
+entrada: imagens/montanha2_4k.ppm  |  sigma_s=1.50 sigma_r=50.00 AWGN=25.0
+tempo_s=2.320738
+PSNR bilateral vs original = 27.09 dB
+PSNR gaussiano vs original = 20.63 dB
+Program exited with status 0
+
+ UTIL  : utilization (same as core C0 state active state residency, the value is in 0..1)
+ IPC   : instructions per CPU cycle
+ CFREQ : core frequency in GHz
+ L3MISS: L3 (read) cache misses
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*)
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ IO    : bytes read/written due to IO requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ IA    : bytes read/written due to IA requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ GT    : bytes read/written due to GT requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | UTIL | IPC  | CFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |  TEMP
+
+   0    0     0.01   0.45    3.43      27 K     94 K    0.69    0.51  0.0012  0.0043     35
+   1    0     0.85   2.85    3.62      16 K     57 K    0.69    0.97  0.0000  0.0000     35
+   2    0     0.14   2.16    3.60     261 K    359 K    0.25    0.70  0.0001  0.0001     48
+   3    0     0.00   0.58    3.35      26 K     48 K    0.42    0.52  0.0013  0.0024     48
+   4    0     0.01   0.79    3.45      82 K    142 K    0.39    0.43  0.0010  0.0017     41
+   5    0     0.01   0.95    3.50      75 K    134 K    0.42    0.52  0.0011  0.0019     41
+   6    0     0.01   0.94    3.41      43 K     74 K    0.36    0.37  0.0006  0.0010     55
+   7    0     0.00   0.71    3.34      38 K     70 K    0.42    0.49  0.0013  0.0023     55
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.13   2.67    3.61     571 K    983 K    0.39    0.75  0.0000  0.0000     35
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.13   2.67    3.61     571 K    983 K    0.39    0.75  0.0000  0.0000     N/A
+
+ Instructions retired:   26 G ; Active cycles:   10 G ; Time (TSC): 3241 Mticks;
+
+ Core C-state residencies: C0 (active,non-halted): 12.93 %; C1: 12.98 %; C3: 0.00 %; C6: 0.00 %; C7: 74.08 %;
+ Package C-state residencies:  C0: 100.00 %; C2: 0.00 %; C3: 0.00 %; C6: 0.00 %; C7: 0.00 %; C8: 0.00 %; C9: 0.00 %; C10: 0.00 %;
+                             ┌───────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│0000000000111111111177777777777777777777777777777777777777777777777777777777777│
+                             └───────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+ Pipeline stalls: Frontend bound: 4 %, bad Speculation: 0 %, Backend bound: 37 %, Retiring: 56 %
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Pipeline stall distribution │FFFFSBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+---------------------------------------------------------------------------------------------------------------
+
+MEM (GB)->|  READ |  WRITE |   IO   |   IA   |   GT   | CPU energy | PP0 energy | PP1 energy |
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.88     0.29     0.25     0.87     0.05      33.41      29.75       0.04
+---------------------------------------------------------------------------------------------------------------
+Cleaning up
+ Zeroed PMU registers
+ Zeroed uncore PMU registers
+
+*
+2
+*
+
+ .\pcm.exe -- .\bilateral_seq.exe 1 3 imagens/montanha2_4k.ppm 25
+DEBUG: Setting Ctrl+C done.
+
+ Intel(r) Performance Counter Monitor ($Format:%ci ID=%h$)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 27
+CPU family               : 6
+CPU model number         : 126
+Number of physical cores: 4
+Number of logical cores: 8
+Number of online logical cores: 8
+Threads (logical cores) per physical core: 2
+Num sockets: 1
+Physical cores per socket: 4
+Last level cache slices per socket: 4
+Core PMU (perfmon) version: 5
+Number of core PMU generic (programmable) counters: 8
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 4
+Width of fixed counters: 48 bits
+Nominal core frequency: 1200000000 Hz
+IBRS enabled in the kernel   : yes
+STIBP enabled in the kernel  : no
+The processor is not susceptible to Rogue Data Cache Load: yes
+The processor supports enhanced IBRS                     : yes
+Package thermal spec power: 15 Watt; Package minimum power: 0 Watt; Package maximum power: 0 Watt;
+
+Socket 0: 0 PCU units detected. 0 IIO units detected. 0 IRP units detected. 0 CHA/CBO units detected. 0 MDF units detected. 0 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+
+Detected Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz "Intel(r) microarchitecture codename Icelake" stepping 5 microcode level 0xa0
+
+Executing ".\bilateral_seq.exe" command:
+bilateral SEQ  |  2048x1365 x 3  |  raio 3  |  threads=0  |  CPUs=8
+entrada: imagens/montanha2_4k.ppm  |  sigma_s=1.50 sigma_r=50.00 AWGN=25.0
+tempo_s=2.325280
+PSNR bilateral vs original = 27.09 dB
+PSNR gaussiano vs original = 20.63 dB
+Program exited with status 0
+
+ UTIL  : utilization (same as core C0 state active state residency, the value is in 0..1)
+ IPC   : instructions per CPU cycle
+ CFREQ : core frequency in GHz
+ L3MISS: L3 (read) cache misses
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*)
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ IO    : bytes read/written due to IO requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ IA    : bytes read/written due to IA requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ GT    : bytes read/written due to GT requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | UTIL | IPC  | CFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |  TEMP
+
+   0    0     0.01   0.57    3.39      59 K    115 K    0.45    0.40  0.0017  0.0032     49
+   1    0     0.00   0.60    3.35      30 K     61 K    0.48    0.52  0.0013  0.0028     49
+   2    0     0.86   2.84    3.62      57 K    106 K    0.43    0.94  0.0000  0.0000     42
+   3    0     0.13   2.22    3.61     152 K    245 K    0.37    0.76  0.0001  0.0001     42
+   4    0     0.01   0.76    3.50     140 K    245 K    0.40    0.48  0.0014  0.0024     47
+   5    0     0.01   0.40    3.50      48 K    114 K    0.55    0.49  0.0020  0.0047     47
+   6    0     0.01   0.89    3.43      43 K     77 K    0.39    0.43  0.0007  0.0012     51
+   7    0     0.01   0.65    3.31      31 K     66 K    0.49    0.51  0.0010  0.0021     51
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.13   2.67    3.61     564 K   1033 K    0.43    0.74  0.0000  0.0000     42
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.13   2.67    3.61     564 K   1033 K    0.43    0.74  0.0000  0.0000     N/A
+
+ Instructions retired:   26 G ; Active cycles:   10 G ; Time (TSC): 3244 Mticks;
+
+ Core C-state residencies: C0 (active,non-halted): 12.94 %; C1: 13.12 %; C3: 0.00 %; C6: 0.00 %; C7: 73.95 %;
+ Package C-state residencies:  C0: 100.00 %; C2: 0.00 %; C3: 0.00 %; C6: 0.00 %; C7: 0.00 %; C8: 0.00 %; C9: 0.00 %; C10: 0.00 %;
+                             ┌───────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│0000000000111111111177777777777777777777777777777777777777777777777777777777777│
+                             └───────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+ Pipeline stalls: Frontend bound: 4 %, bad Speculation: 0 %, Backend bound: 37 %, Retiring: 56 %
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Pipeline stall distribution │FFFFSBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+---------------------------------------------------------------------------------------------------------------
+
+MEM (GB)->|  READ |  WRITE |   IO   |   IA   |   GT   | CPU energy | PP0 energy | PP1 energy |
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.90     0.29     0.26     0.89     0.05      32.59      28.93       0.04
+---------------------------------------------------------------------------------------------------------------
+Cleaning up
+ Zeroed PMU registers
+ Zeroed uncore PMU registers
+
+*
+3
+*
+
+ .\pcm.exe -- .\bilateral_seq.exe 1 3 imagens/montanha2_4k.ppm 25
+DEBUG: Setting Ctrl+C done.
+
+ Intel(r) Performance Counter Monitor ($Format:%ci ID=%h$)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 27
+CPU family               : 6
+CPU model number         : 126
+Number of physical cores: 4
+Number of logical cores: 8
+Number of online logical cores: 8
+Threads (logical cores) per physical core: 2
+Num sockets: 1
+Physical cores per socket: 4
+Last level cache slices per socket: 4
+Core PMU (perfmon) version: 5
+Number of core PMU generic (programmable) counters: 8
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 4
+Width of fixed counters: 48 bits
+Nominal core frequency: 1200000000 Hz
+IBRS enabled in the kernel   : yes
+STIBP enabled in the kernel  : no
+The processor is not susceptible to Rogue Data Cache Load: yes
+The processor supports enhanced IBRS                     : yes
+Package thermal spec power: 15 Watt; Package minimum power: 0 Watt; Package maximum power: 0 Watt;
+
+Socket 0: 0 PCU units detected. 0 IIO units detected. 0 IRP units detected. 0 CHA/CBO units detected. 0 MDF units detected. 0 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+
+Detected Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz "Intel(r) microarchitecture codename Icelake" stepping 5 microcode level 0xa0
+
+Executing ".\bilateral_seq.exe" command:
+bilateral SEQ  |  2048x1365 x 3  |  raio 3  |  threads=0  |  CPUs=8
+entrada: imagens/montanha2_4k.ppm  |  sigma_s=1.50 sigma_r=50.00 AWGN=25.0
+tempo_s=2.328726
+PSNR bilateral vs original = 27.09 dB
+PSNR gaussiano vs original = 20.63 dB
+Program exited with status 0
+
+ UTIL  : utilization (same as core C0 state active state residency, the value is in 0..1)
+ IPC   : instructions per CPU cycle
+ CFREQ : core frequency in GHz
+ L3MISS: L3 (read) cache misses
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*)
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ IO    : bytes read/written due to IO requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ IA    : bytes read/written due to IA requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ GT    : bytes read/written due to GT requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | UTIL | IPC  | CFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |  TEMP
+
+   0    0     0.01   0.52    3.47      91 K    191 K    0.49    0.41  0.0016  0.0034     43
+   1    0     0.00   0.69    3.41      18 K     41 K    0.49    0.54  0.0011  0.0025     43
+   2    0     0.86   2.84    3.62      70 K    120 K    0.36    0.95  0.0000  0.0000     43
+   3    0     0.13   2.24    3.61     142 K    196 K    0.27    0.78  0.0000  0.0001     43
+   4    0     0.01   0.56    3.47      98 K    214 K    0.52    0.49  0.0016  0.0034     51
+   5    0     0.00   0.63    3.43      31 K     61 K    0.45    0.48  0.0013  0.0025     51
+   6    0     0.01   0.92    3.39      46 K     92 K    0.45    0.42  0.0007  0.0013     51
+   7    0     0.01   0.93    3.43      89 K    164 K    0.43    0.52  0.0010  0.0019     51
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.13   2.66    3.61     589 K   1083 K    0.43    0.77  0.0000  0.0000     43
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.13   2.66    3.61     589 K   1083 K    0.43    0.77  0.0000  0.0000     N/A
+
+ Instructions retired:   27 G ; Active cycles:   10 G ; Time (TSC): 3251 Mticks;
+
+ Core C-state residencies: C0 (active,non-halted): 12.95 %; C1: 13.27 %; C3: 0.00 %; C6: 0.00 %; C7: 73.78 %;
+ Package C-state residencies:  C0: 100.00 %; C2: 0.00 %; C3: 0.00 %; C6: 0.00 %; C7: 0.00 %; C8: 0.00 %; C9: 0.00 %; C10: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00000000001111111111177777777777777777777777777777777777777777777777777777777777│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+ Pipeline stalls: Frontend bound: 4 %, bad Speculation: 0 %, Backend bound: 37 %, Retiring: 56 %
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Pipeline stall distribution │FFFFSBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+---------------------------------------------------------------------------------------------------------------
+
+MEM (GB)->|  READ |  WRITE |   IO   |   IA   |   GT   | CPU energy | PP0 energy | PP1 energy |
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.94     0.30     0.27     0.91     0.07      32.85      29.18       0.05
+---------------------------------------------------------------------------------------------------------------
+Cleaning up
+ Zeroed PMU registers
+ Zeroed uncore PMU registers
+
+*
+4
+*
+
+ .\pcm.exe -- .\bilateral_seq.exe 1 3 imagens/montanha2_4k.ppm 25
+DEBUG: Setting Ctrl+C done.
+
+ Intel(r) Performance Counter Monitor ($Format:%ci ID=%h$)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 27
+CPU family               : 6
+CPU model number         : 126
+Number of physical cores: 4
+Number of logical cores: 8
+Number of online logical cores: 8
+Threads (logical cores) per physical core: 2
+Num sockets: 1
+Physical cores per socket: 4
+Last level cache slices per socket: 4
+Core PMU (perfmon) version: 5
+Number of core PMU generic (programmable) counters: 8
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 4
+Width of fixed counters: 48 bits
+Nominal core frequency: 1200000000 Hz
+IBRS enabled in the kernel   : yes
+STIBP enabled in the kernel  : no
+The processor is not susceptible to Rogue Data Cache Load: yes
+The processor supports enhanced IBRS                     : yes
+Package thermal spec power: 15 Watt; Package minimum power: 0 Watt; Package maximum power: 0 Watt;
+
+Socket 0: 0 PCU units detected. 0 IIO units detected. 0 IRP units detected. 0 CHA/CBO units detected. 0 MDF units detected. 0 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+
+Detected Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz "Intel(r) microarchitecture codename Icelake" stepping 5 microcode level 0xa0
+
+Executing ".\bilateral_seq.exe" command:
+bilateral SEQ  |  2048x1365 x 3  |  raio 3  |  threads=0  |  CPUs=8
+entrada: imagens/montanha2_4k.ppm  |  sigma_s=1.50 sigma_r=50.00 AWGN=25.0
+tempo_s=2.331357
+PSNR bilateral vs original = 27.09 dB
+PSNR gaussiano vs original = 20.63 dB
+Program exited with status 0
+
+ UTIL  : utilization (same as core C0 state active state residency, the value is in 0..1)
+ IPC   : instructions per CPU cycle
+ CFREQ : core frequency in GHz
+ L3MISS: L3 (read) cache misses
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*)
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ IO    : bytes read/written due to IO requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ IA    : bytes read/written due to IA requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ GT    : bytes read/written due to GT requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | UTIL | IPC  | CFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |  TEMP
+
+   0    0     0.01   0.67    3.46      85 K    329 K    0.73    0.44  0.0010  0.0038     45
+   1    0     0.01   1.12    3.53      21 K     40 K    0.42    0.93  0.0004  0.0007     45
+   2    0     0.85   2.84    3.62      96 K    153 K    0.32    0.92  0.0000  0.0000     43
+   3    0     0.00   0.47    3.34    7042       17 K    0.53    0.50  0.0015  0.0038     43
+   4    0     0.01   0.53    3.45      84 K    226 K    0.59    0.39  0.0015  0.0039     46
+   5    0     0.14   2.18    3.61     176 K    291 K    0.37    0.73  0.0001  0.0001     46
+   6    0     0.01   1.02    3.45      70 K    105 K    0.29    0.33  0.0008  0.0013     50
+   7    0     0.01   0.73    3.41      48 K     86 K    0.41    0.49  0.0013  0.0023     50
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.13   2.67    3.61     591 K   1252 K    0.50    0.75  0.0000  0.0000     43
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.13   2.67    3.61     591 K   1252 K    0.50    0.75  0.0000  0.0000     N/A
+
+ Instructions retired:   26 G ; Active cycles:   10 G ; Time (TSC): 3253 Mticks;
+
+ Core C-state residencies: C0 (active,non-halted): 12.92 %; C1: 13.44 %; C3: 0.00 %; C6: 0.00 %; C7: 73.64 %;
+ Package C-state residencies:  C0: 100.00 %; C2: 0.00 %; C3: 0.00 %; C6: 0.00 %; C7: 0.00 %; C8: 0.00 %; C9: 0.00 %; C10: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00000000001111111111177777777777777777777777777777777777777777777777777777777777│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+ Pipeline stalls: Frontend bound: 4 %, bad Speculation: 0 %, Backend bound: 37 %, Retiring: 56 %
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Pipeline stall distribution │FFFFSBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+---------------------------------------------------------------------------------------------------------------
+
+MEM (GB)->|  READ |  WRITE |   IO   |   IA   |   GT   | CPU energy | PP0 energy | PP1 energy |
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.90     0.29     0.25     0.88     0.06      32.86      29.26       0.04
+---------------------------------------------------------------------------------------------------------------
+Cleaning up
+ Zeroed PMU registers
+ Zeroed uncore PMU registers
+
+*
+5
+*
+
+ .\pcm.exe -- .\bilateral_seq.exe 1 3 imagens/montanha2_4k.ppm 25
+DEBUG: Setting Ctrl+C done.
+
+ Intel(r) Performance Counter Monitor ($Format:%ci ID=%h$)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 27
+CPU family               : 6
+CPU model number         : 126
+Number of physical cores: 4
+Number of logical cores: 8
+Number of online logical cores: 8
+Threads (logical cores) per physical core: 2
+Num sockets: 1
+Physical cores per socket: 4
+Last level cache slices per socket: 4
+Core PMU (perfmon) version: 5
+Number of core PMU generic (programmable) counters: 8
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 4
+Width of fixed counters: 48 bits
+Nominal core frequency: 1200000000 Hz
+IBRS enabled in the kernel   : yes
+STIBP enabled in the kernel  : no
+The processor is not susceptible to Rogue Data Cache Load: yes
+The processor supports enhanced IBRS                     : yes
+Package thermal spec power: 15 Watt; Package minimum power: 0 Watt; Package maximum power: 0 Watt;
+
+Socket 0: 0 PCU units detected. 0 IIO units detected. 0 IRP units detected. 0 CHA/CBO units detected. 0 MDF units detected. 0 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+
+Detected Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz "Intel(r) microarchitecture codename Icelake" stepping 5 microcode level 0xa0
+
+Executing ".\bilateral_seq.exe" command:
+bilateral SEQ  |  2048x1365 x 3  |  raio 3  |  threads=0  |  CPUs=8
+entrada: imagens/montanha2_4k.ppm  |  sigma_s=1.50 sigma_r=50.00 AWGN=25.0
+tempo_s=2.334154
+PSNR bilateral vs original = 27.09 dB
+PSNR gaussiano vs original = 20.63 dB
+Program exited with status 0
+
+ UTIL  : utilization (same as core C0 state active state residency, the value is in 0..1)
+ IPC   : instructions per CPU cycle
+ CFREQ : core frequency in GHz
+ L3MISS: L3 (read) cache misses
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*)
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ IO    : bytes read/written due to IO requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ IA    : bytes read/written due to IA requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ GT    : bytes read/written due to GT requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | UTIL | IPC  | CFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |  TEMP
+
+   0    0     0.63   2.84    3.62      71 K    136 K    0.44    0.90  0.0000  0.0000     35
+   1    0     0.36   2.61    3.62     141 K    206 K    0.29    0.85  0.0000  0.0000     35
+   2    0     0.02   0.77    3.48      92 K    302 K    0.68    0.43  0.0006  0.0021     47
+   3    0     0.01   0.92    3.54      79 K    132 K    0.39    0.52  0.0012  0.0021     47
+   4    0     0.01   0.84    3.48     117 K    270 K    0.54    0.45  0.0010  0.0024     42
+   5    0     0.00   0.33    3.41      33 K     74 K    0.50    0.47  0.0024  0.0053     42
+   6    0     0.00   0.37    3.24      11 K     38 K    0.64    0.48  0.0014  0.0044     53
+   7    0     0.01   0.64    3.33      68 K    117 K    0.37    0.46  0.0016  0.0028     53
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.13   2.65    3.61     615 K   1278 K    0.49    0.71  0.0000  0.0000     35
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.13   2.65    3.61     615 K   1278 K    0.49    0.71  0.0000  0.0000     N/A
+
+ Instructions retired:   27 G ; Active cycles:   10 G ; Time (TSC): 3258 Mticks;
+
+ Core C-state residencies: C0 (active,non-halted): 12.99 %; C1: 13.40 %; C3: 0.00 %; C6: 0.00 %; C7: 73.62 %;
+ Package C-state residencies:  C0: 100.00 %; C2: 0.00 %; C3: 0.00 %; C6: 0.00 %; C7: 0.00 %; C8: 0.00 %; C9: 0.00 %; C10: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00000000001111111111177777777777777777777777777777777777777777777777777777777777│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+ Pipeline stalls: Frontend bound: 5 %, bad Speculation: 0 %, Backend bound: 37 %, Retiring: 56 %
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Pipeline stall distribution │FFFFSBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+---------------------------------------------------------------------------------------------------------------
+
+MEM (GB)->|  READ |  WRITE |   IO   |   IA   |   GT   | CPU energy | PP0 energy | PP1 energy |
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.95     0.30     0.27     0.92     0.06      33.91      30.22       0.04
+---------------------------------------------------------------------------------------------------------------
+Cleaning up
+ Zeroed PMU registers
+ Zeroed uncore PMU registers
+
+*
+6
+*
+
+.\pcm.exe -- .\bilateral_seq.exe 1 3 imagens/montanha2_4k.ppm 25
+DEBUG: Setting Ctrl+C done.
+
+ Intel(r) Performance Counter Monitor ($Format:%ci ID=%h$)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 27
+CPU family               : 6
+CPU model number         : 126
+Number of physical cores: 4
+Number of logical cores: 8
+Number of online logical cores: 8
+Threads (logical cores) per physical core: 2
+Num sockets: 1
+Physical cores per socket: 4
+Last level cache slices per socket: 4
+Core PMU (perfmon) version: 5
+Number of core PMU generic (programmable) counters: 8
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 4
+Width of fixed counters: 48 bits
+Nominal core frequency: 1200000000 Hz
+IBRS enabled in the kernel   : yes
+STIBP enabled in the kernel  : no
+The processor is not susceptible to Rogue Data Cache Load: yes
+The processor supports enhanced IBRS                     : yes
+Package thermal spec power: 15 Watt; Package minimum power: 0 Watt; Package maximum power: 0 Watt;
+
+Socket 0: 0 PCU units detected. 0 IIO units detected. 0 IRP units detected. 0 CHA/CBO units detected. 0 MDF units detected. 0 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+
+Detected Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz "Intel(r) microarchitecture codename Icelake" stepping 5 microcode level 0xa0
+
+Executing ".\bilateral_seq.exe" command:
+bilateral SEQ  |  2048x1365 x 3  |  raio 3  |  threads=0  |  CPUs=8
+entrada: imagens/montanha2_4k.ppm  |  sigma_s=1.50 sigma_r=50.00 AWGN=25.0
+tempo_s=2.334155
+PSNR bilateral vs original = 27.09 dB
+PSNR gaussiano vs original = 20.63 dB
+Program exited with status 0
+
+ UTIL  : utilization (same as core C0 state active state residency, the value is in 0..1)
+ IPC   : instructions per CPU cycle
+ CFREQ : core frequency in GHz
+ L3MISS: L3 (read) cache misses
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*)
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ IO    : bytes read/written due to IO requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ IA    : bytes read/written due to IA requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ GT    : bytes read/written due to GT requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | UTIL | IPC  | CFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |  TEMP
+
+   0    0     0.01   0.59    3.37      74 K    160 K    0.51    0.50  0.0014  0.0029     39
+   1    0     0.00   0.48    3.26      20 K     52 K    0.58    0.55  0.0014  0.0037     39
+   2    0     0.23   2.72    3.61     112 K    239 K    0.50    0.73  0.0000  0.0000     42
+   3    0     0.01   0.51    3.43      57 K     99 K    0.40    0.48  0.0021  0.0036     42
+   4    0     0.28   2.77    3.61     115 K    187 K    0.35    0.78  0.0000  0.0000     31
+   5    0     0.37   2.84    3.62      15 K     39 K    0.56    0.95  0.0000  0.0000     31
+   6    0     0.14   2.18    3.61     172 K    253 K    0.29    0.75  0.0001  0.0001     47
+   7    0     0.01   0.51    3.38     118 K    176 K    0.31    0.50  0.0031  0.0047     47
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.13   2.65    3.61     684 K   1208 K    0.40    0.73  0.0000  0.0000     31
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.13   2.65    3.61     684 K   1208 K    0.40    0.73  0.0000  0.0000     N/A
+
+ Instructions retired:   27 G ; Active cycles:   10 G ; Time (TSC): 3259 Mticks;
+
+ Core C-state residencies: C0 (active,non-halted): 13.02 %; C1: 13.43 %; C3: 0.00 %; C6: 0.00 %; C7: 73.55 %;
+ Package C-state residencies:  C0: 100.00 %; C2: 0.00 %; C3: 0.00 %; C6: 0.00 %; C7: 0.00 %; C8: 0.00 %; C9: 0.00 %; C10: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00000000001111111111177777777777777777777777777777777777777777777777777777777777│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+ Pipeline stalls: Frontend bound: 5 %, bad Speculation: 0 %, Backend bound: 37 %, Retiring: 56 %
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Pipeline stall distribution │FFFFSBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+---------------------------------------------------------------------------------------------------------------
+
+MEM (GB)->|  READ |  WRITE |   IO   |   IA   |   GT   | CPU energy | PP0 energy | PP1 energy |
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     1.00     0.31     0.25     0.99     0.06      31.19      27.31       0.04
+---------------------------------------------------------------------------------------------------------------
+Cleaning up
+ Zeroed PMU registers
+ Zeroed uncore PMU registers
+
+*
+7
+*
+
+ .\pcm.exe -- .\bilateral_seq.exe 1 3 imagens/montanha2_4k.ppm 25
+DEBUG: Setting Ctrl+C done.
+
+ Intel(r) Performance Counter Monitor ($Format:%ci ID=%h$)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 27
+CPU family               : 6
+CPU model number         : 126
+Number of physical cores: 4
+Number of logical cores: 8
+Number of online logical cores: 8
+Threads (logical cores) per physical core: 2
+Num sockets: 1
+Physical cores per socket: 4
+Last level cache slices per socket: 4
+Core PMU (perfmon) version: 5
+Number of core PMU generic (programmable) counters: 8
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 4
+Width of fixed counters: 48 bits
+Nominal core frequency: 1200000000 Hz
+IBRS enabled in the kernel   : yes
+STIBP enabled in the kernel  : no
+The processor is not susceptible to Rogue Data Cache Load: yes
+The processor supports enhanced IBRS                     : yes
+Package thermal spec power: 15 Watt; Package minimum power: 0 Watt; Package maximum power: 0 Watt;
+
+Socket 0: 0 PCU units detected. 0 IIO units detected. 0 IRP units detected. 0 CHA/CBO units detected. 0 MDF units detected. 0 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+
+Detected Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz "Intel(r) microarchitecture codename Icelake" stepping 5 microcode level 0xa0
+
+Executing ".\bilateral_seq.exe" command:
+bilateral SEQ  |  2048x1365 x 3  |  raio 3  |  threads=0  |  CPUs=8
+entrada: imagens/montanha2_4k.ppm  |  sigma_s=1.50 sigma_r=50.00 AWGN=25.0
+tempo_s=2.331888
+PSNR bilateral vs original = 27.09 dB
+PSNR gaussiano vs original = 20.63 dB
+Program exited with status 0
+
+ UTIL  : utilization (same as core C0 state active state residency, the value is in 0..1)
+ IPC   : instructions per CPU cycle
+ CFREQ : core frequency in GHz
+ L3MISS: L3 (read) cache misses
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*)
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ IO    : bytes read/written due to IO requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ IA    : bytes read/written due to IA requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ GT    : bytes read/written due to GT requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | UTIL | IPC  | CFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |  TEMP
+
+   0    0     0.01   0.44    3.32      55 K    137 K    0.56    0.50  0.0016  0.0039     37
+   1    0     0.01   0.71    3.40      28 K     70 K    0.54    0.53  0.0007  0.0017     37
+   2    0     0.01   1.67    3.53      24 K     95 K    0.70    0.58  0.0001  0.0005     39
+   3    0     0.97   2.77    3.62     182 K    252 K    0.27    0.92  0.0000  0.0000     39
+   4    0     0.02   0.91    3.49     211 K    321 K    0.31    0.46  0.0014  0.0021     43
+   5    0     0.00   0.34    3.34      31 K     61 K    0.43    0.46  0.0027  0.0052     43
+   6    0     0.01   0.85    3.46      56 K    104 K    0.40    0.39  0.0008  0.0014     47
+   7    0     0.01   0.73    3.46     163 K    248 K    0.32    0.55  0.0020  0.0031     47
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.13   2.65    3.61     754 K   1291 K    0.38    0.75  0.0000  0.0000     37
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.13   2.65    3.61     754 K   1291 K    0.38    0.75  0.0000  0.0000     N/A
+
+ Instructions retired:   27 G ; Active cycles:   10 G ; Time (TSC): 3258 Mticks;
+
+ Core C-state residencies: C0 (active,non-halted): 13.02 %; C1: 13.51 %; C3: 0.00 %; C6: 0.00 %; C7: 73.47 %;
+ Package C-state residencies:  C0: 100.00 %; C2: 0.00 %; C3: 0.00 %; C6: 0.00 %; C7: 0.00 %; C8: 0.00 %; C9: 0.00 %; C10: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00000000001111111111177777777777777777777777777777777777777777777777777777777777│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+ Pipeline stalls: Frontend bound: 5 %, bad Speculation: 0 %, Backend bound: 37 %, Retiring: 56 %
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Pipeline stall distribution │FFFFSBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+---------------------------------------------------------------------------------------------------------------
+
+MEM (GB)->|  READ |  WRITE |   IO   |   IA   |   GT   | CPU energy | PP0 energy | PP1 energy |
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     1.03     0.31     0.27     1.01     0.07      31.17      27.35       0.04
+---------------------------------------------------------------------------------------------------------------
+Cleaning up
+ Zeroed PMU registers
+ Zeroed uncore PMU registers
+
+*
+8
+*
+
+ .\pcm.exe -- .\bilateral_seq.exe 1 3 imagens/montanha2_4k.ppm 25
+DEBUG: Setting Ctrl+C done.
+
+ Intel(r) Performance Counter Monitor ($Format:%ci ID=%h$)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 27
+CPU family               : 6
+CPU model number         : 126
+Number of physical cores: 4
+Number of logical cores: 8
+Number of online logical cores: 8
+Threads (logical cores) per physical core: 2
+Num sockets: 1
+Physical cores per socket: 4
+Last level cache slices per socket: 4
+Core PMU (perfmon) version: 5
+Number of core PMU generic (programmable) counters: 8
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 4
+Width of fixed counters: 48 bits
+Nominal core frequency: 1200000000 Hz
+IBRS enabled in the kernel   : yes
+STIBP enabled in the kernel  : no
+The processor is not susceptible to Rogue Data Cache Load: yes
+The processor supports enhanced IBRS                     : yes
+Package thermal spec power: 15 Watt; Package minimum power: 0 Watt; Package maximum power: 0 Watt;
+
+Socket 0: 0 PCU units detected. 0 IIO units detected. 0 IRP units detected. 0 CHA/CBO units detected. 0 MDF units detected. 0 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+
+Detected Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz "Intel(r) microarchitecture codename Icelake" stepping 5 microcode level 0xa0
+
+Executing ".\bilateral_seq.exe" command:
+bilateral SEQ  |  2048x1365 x 3  |  raio 3  |  threads=0  |  CPUs=8
+entrada: imagens/montanha2_4k.ppm  |  sigma_s=1.50 sigma_r=50.00 AWGN=25.0
+tempo_s=2.326783
+PSNR bilateral vs original = 27.09 dB
+PSNR gaussiano vs original = 20.63 dB
+Program exited with status 0
+
+ UTIL  : utilization (same as core C0 state active state residency, the value is in 0..1)
+ IPC   : instructions per CPU cycle
+ CFREQ : core frequency in GHz
+ L3MISS: L3 (read) cache misses
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*)
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ IO    : bytes read/written due to IO requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ IA    : bytes read/written due to IA requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ GT    : bytes read/written due to GT requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | UTIL | IPC  | CFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |  TEMP
+
+   0    0     0.44   2.83    3.62      62 K    114 K    0.40    0.89  0.0000  0.0000     35
+   1    0     0.54   2.71    3.62     155 K    219 K    0.27    0.87  0.0000  0.0000     35
+   2    0     0.02   0.79    3.53     182 K    302 K    0.36    0.46  0.0013  0.0021     42
+   3    0     0.01   0.30    3.41      77 K    133 K    0.39    0.43  0.0043  0.0074     42
+   4    0     0.01   0.93    3.42      63 K    134 K    0.48    0.45  0.0007  0.0014     33
+   5    0     0.01   0.45    3.43      34 K     67 K    0.43    0.47  0.0010  0.0020     33
+   6    0     0.01   0.82    3.47      77 K    165 K    0.51    0.53  0.0011  0.0024     50
+   7    0     0.01   0.62    3.38      58 K    122 K    0.50    0.49  0.0014  0.0030     50
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.13   2.65    3.61     712 K   1261 K    0.40    0.71  0.0000  0.0000     33
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.13   2.65    3.61     712 K   1261 K    0.40    0.71  0.0000  0.0000     N/A
+
+ Instructions retired:   27 G ; Active cycles:   10 G ; Time (TSC): 3252 Mticks;
+
+ Core C-state residencies: C0 (active,non-halted): 13.03 %; C1: 13.44 %; C3: 0.00 %; C6: 0.00 %; C7: 73.53 %;
+ Package C-state residencies:  C0: 100.00 %; C2: 0.00 %; C3: 0.00 %; C6: 0.00 %; C7: 0.00 %; C8: 0.00 %; C9: 0.00 %; C10: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00000000001111111111177777777777777777777777777777777777777777777777777777777777│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+ Pipeline stalls: Frontend bound: 5 %, bad Speculation: 0 %, Backend bound: 37 %, Retiring: 56 %
+                             ┌───────────────────────────────────────────────────────────────────────────────┐
+ Pipeline stall distribution │FFFFBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR│
+                             └───────────────────────────────────────────────────────────────────────────────┘
+
+---------------------------------------------------------------------------------------------------------------
+
+MEM (GB)->|  READ |  WRITE |   IO   |   IA   |   GT   | CPU energy | PP0 energy | PP1 energy |
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     1.04     0.31     0.28     1.01     0.07      31.75      27.77       0.05
+---------------------------------------------------------------------------------------------------------------
+Cleaning up
+ Zeroed PMU registers
+ Zeroed uncore PMU registers
+
+*
+9
+*
+
+ .\pcm.exe -- .\bilateral_seq.exe 1 3 imagens/montanha2_4k.ppm 25
+DEBUG: Setting Ctrl+C done.
+
+ Intel(r) Performance Counter Monitor ($Format:%ci ID=%h$)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 27
+CPU family               : 6
+CPU model number         : 126
+Number of physical cores: 4
+Number of logical cores: 8
+Number of online logical cores: 8
+Threads (logical cores) per physical core: 2
+Num sockets: 1
+Physical cores per socket: 4
+Last level cache slices per socket: 4
+Core PMU (perfmon) version: 5
+Number of core PMU generic (programmable) counters: 8
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 4
+Width of fixed counters: 48 bits
+Nominal core frequency: 1200000000 Hz
+IBRS enabled in the kernel   : yes
+STIBP enabled in the kernel  : no
+The processor is not susceptible to Rogue Data Cache Load: yes
+The processor supports enhanced IBRS                     : yes
+Package thermal spec power: 15 Watt; Package minimum power: 0 Watt; Package maximum power: 0 Watt;
+
+Socket 0: 0 PCU units detected. 0 IIO units detected. 0 IRP units detected. 0 CHA/CBO units detected. 0 MDF units detected. 0 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+
+Detected Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz "Intel(r) microarchitecture codename Icelake" stepping 5 microcode level 0xa0
+
+Executing ".\bilateral_seq.exe" command:
+bilateral SEQ  |  2048x1365 x 3  |  raio 3  |  threads=0  |  CPUs=8
+entrada: imagens/montanha2_4k.ppm  |  sigma_s=1.50 sigma_r=50.00 AWGN=25.0
+tempo_s=2.334940
+PSNR bilateral vs original = 27.09 dB
+PSNR gaussiano vs original = 20.63 dB
+Program exited with status 0
+
+ UTIL  : utilization (same as core C0 state active state residency, the value is in 0..1)
+ IPC   : instructions per CPU cycle
+ CFREQ : core frequency in GHz
+ L3MISS: L3 (read) cache misses
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*)
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ IO    : bytes read/written due to IO requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ IA    : bytes read/written due to IA requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ GT    : bytes read/written due to GT requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | UTIL | IPC  | CFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |  TEMP
+
+   0    0     0.01   0.44    3.43     134 K    238 K    0.41    0.49  0.0025  0.0045     43
+   1    0     0.13   2.20    3.61     168 K    282 K    0.38    0.73  0.0001  0.0001     43
+   2    0     0.85   2.84    3.62      54 K    110 K    0.45    0.94  0.0000  0.0000     40
+   3    0     0.00   0.46    3.31      53 K     80 K    0.28    0.41  0.0037  0.0055     40
+   4    0     0.02   0.83    3.50     227 K    383 K    0.38    0.69  0.0012  0.0020     38
+   5    0     0.00   0.29    3.45      24 K     50 K    0.47    0.56  0.0026  0.0053     38
+   6    0     0.01   0.88    3.39      48 K    107 K    0.50    0.45  0.0006  0.0014     47
+   7    0     0.01   0.62    3.32      57 K    126 K    0.52    0.48  0.0013  0.0029     47
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.13   2.64    3.60     768 K   1378 K    0.41    0.73  0.0000  0.0001     38
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.13   2.64    3.60     768 K   1378 K    0.41    0.73  0.0000  0.0001     N/A
+
+ Instructions retired:   27 G ; Active cycles:   10 G ; Time (TSC): 3257 Mticks;
+
+ Core C-state residencies: C0 (active,non-halted): 13.08 %; C1: 13.53 %; C3: 0.00 %; C6: 0.00 %; C7: 73.39 %;
+ Package C-state residencies:  C0: 100.00 %; C2: 0.00 %; C3: 0.00 %; C6: 0.00 %; C7: 0.00 %; C8: 0.00 %; C9: 0.00 %; C10: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00000000001111111111177777777777777777777777777777777777777777777777777777777777│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+ Pipeline stalls: Frontend bound: 5 %, bad Speculation: 0 %, Backend bound: 37 %, Retiring: 56 %
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Pipeline stall distribution │FFFFSBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+---------------------------------------------------------------------------------------------------------------
+
+MEM (GB)->|  READ |  WRITE |   IO   |   IA   |   GT   | CPU energy | PP0 energy | PP1 energy |
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     1.08     0.31     0.28     1.04     0.07      31.23      27.39       0.04
+---------------------------------------------------------------------------------------------------------------
+Cleaning up
+ Zeroed PMU registers
+ Zeroed uncore PMU registers
+
+*
+10
+*
+
+ .\pcm.exe -- .\bilateral_seq.exe 1 3 imagens/montanha2_4k.ppm 25
+DEBUG: Setting Ctrl+C done.
+
+ Intel(r) Performance Counter Monitor ($Format:%ci ID=%h$)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 27
+CPU family               : 6
+CPU model number         : 126
+Number of physical cores: 4
+Number of logical cores: 8
+Number of online logical cores: 8
+Threads (logical cores) per physical core: 2
+Num sockets: 1
+Physical cores per socket: 4
+Last level cache slices per socket: 4
+Core PMU (perfmon) version: 5
+Number of core PMU generic (programmable) counters: 8
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 4
+Width of fixed counters: 48 bits
+Nominal core frequency: 1200000000 Hz
+IBRS enabled in the kernel   : yes
+STIBP enabled in the kernel  : no
+The processor is not susceptible to Rogue Data Cache Load: yes
+The processor supports enhanced IBRS                     : yes
+Package thermal spec power: 15 Watt; Package minimum power: 0 Watt; Package maximum power: 0 Watt;
+
+Socket 0: 0 PCU units detected. 0 IIO units detected. 0 IRP units detected. 0 CHA/CBO units detected. 0 MDF units detected. 0 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+
+Detected Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz "Intel(r) microarchitecture codename Icelake" stepping 5 microcode level 0xa0
+
+Executing ".\bilateral_seq.exe" command:
+bilateral SEQ  |  2048x1365 x 3  |  raio 3  |  threads=0  |  CPUs=8
+entrada: imagens/montanha2_4k.ppm  |  sigma_s=1.50 sigma_r=50.00 AWGN=25.0
+tempo_s=2.328092
+PSNR bilateral vs original = 27.09 dB
+PSNR gaussiano vs original = 20.63 dB
+Program exited with status 0
+
+ UTIL  : utilization (same as core C0 state active state residency, the value is in 0..1)
+ IPC   : instructions per CPU cycle
+ CFREQ : core frequency in GHz
+ L3MISS: L3 (read) cache misses
+ L2MISS: L2 (read) cache misses (including other core's L2 cache *hits*)
+ L3HIT : L3 (read) cache hit ratio (0.00-1.00)
+ L2HIT : L2 cache hit ratio (0.00-1.00)
+ L3MPI : number of L3 (read) cache misses per instruction
+ L2MPI : number of L2 (read) cache misses per instruction
+ READ  : bytes read from main memory controller (in GBytes)
+ WRITE : bytes written to main memory controller (in GBytes)
+ IO    : bytes read/written due to IO requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ IA    : bytes read/written due to IA requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ GT    : bytes read/written due to GT requests to memory controller (in GBytes); this may be an over estimate due to same-cache-line partial requests
+ TEMP  : Temperature reading in 1 degree Celsius relative to the TjMax temperature (thermal headroom): 0 corresponds to the max temperature
+ energy: Energy in Joules
+
+
+ Core (SKT) | UTIL | IPC  | CFREQ | L3MISS | L2MISS | L3HIT | L2HIT | L3MPI | L2MPI |  TEMP
+
+   0    0     0.01   0.74    3.46      83 K    184 K    0.52    0.51  0.0012  0.0026     45
+   1    0     0.00   0.37    3.30      20 K     55 K    0.59    0.55  0.0017  0.0048     45
+   2    0     0.14   2.12    3.61     215 K    341 K    0.34    0.70  0.0001  0.0001     40
+   3    0     0.00   0.33    3.37      33 K     75 K    0.52    0.49  0.0027  0.0062     40
+   4    0     0.05   2.45    3.60      56 K     93 K    0.32    0.62  0.0001  0.0001     41
+   5    0     0.59   2.85    3.62      10 K     42 K    0.72    0.97  0.0000  0.0000     41
+   6    0     0.01   0.62    3.37      74 K    123 K    0.36    0.38  0.0022  0.0037     48
+   7    0     0.22   2.80    3.61      76 K    134 K    0.38    0.81  0.0000  0.0000     48
+---------------------------------------------------------------------------------------------------------------
+ SKT    0     0.13   2.67    3.61     571 K   1052 K    0.42    0.75  0.0000  0.0000     40
+---------------------------------------------------------------------------------------------------------------
+ TOTAL  *     0.13   2.67    3.61     571 K   1052 K    0.42    0.75  0.0000  0.0000     N/A
+
+ Instructions retired:   26 G ; Active cycles:   10 G ; Time (TSC): 3249 Mticks;
+
+ Core C-state residencies: C0 (active,non-halted): 12.89 %; C1: 13.17 %; C3: 0.00 %; C6: 0.00 %; C7: 73.94 %;
+ Package C-state residencies:  C0: 100.00 %; C2: 0.00 %; C3: 0.00 %; C6: 0.00 %; C7: 0.00 %; C8: 0.00 %; C9: 0.00 %; C10: 0.00 %;
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Core    C-state distribution│00000000001111111111177777777777777777777777777777777777777777777777777777777777│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Package C-state distribution│00000000000000000000000000000000000000000000000000000000000000000000000000000000│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+ Pipeline stalls: Frontend bound: 4 %, bad Speculation: 0 %, Backend bound: 37 %, Retiring: 56 %
+                             ┌────────────────────────────────────────────────────────────────────────────────┐
+ Pipeline stall distribution │FFFFSBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR│
+                             └────────────────────────────────────────────────────────────────────────────────┘
+
+---------------------------------------------------------------------------------------------------------------
+
+MEM (GB)->|  READ |  WRITE |   IO   |   IA   |   GT   | CPU energy | PP0 energy | PP1 energy |
+---------------------------------------------------------------------------------------------------------------
+ SKT   0     0.88     0.29     0.25     0.86     0.05      30.85      27.06       0.03
+---------------------------------------------------------------------------------------------------------------
+Cleaning up
+ Zeroed PMU registers
+ Zeroed uncore PMU registers
